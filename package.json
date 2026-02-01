@@ -1,0 +1,22 @@
+{
+  "name": "smart-hiring-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-Powered Smart Hiring & Skill Verification Platform",
+  "scripts": {
+    "backend:dev": "npm run dev --workspace=backend",
+    "backend:build": "npm run build --workspace=backend",
+    "frontend:dev": "npm run dev -w frontend",
+    "frontend:build": "npm run build --workspace=frontend",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build"
+  },
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
