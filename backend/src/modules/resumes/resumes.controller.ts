@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiBody, ApiConsumes, ApiProperty } from '@nestjs/swagger';
+import type { Express } from 'express';
 import { ResumesService } from './resumes.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';

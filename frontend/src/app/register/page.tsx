@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -10,7 +11,7 @@ const ROLES = [
   { value: 'recruiter', label: 'Recruiter', gradient: 'from-cyan-500 to-emerald-500' },
 ] as const;
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [fullName, setFullName] = useState('');
@@ -132,5 +133,13 @@ export default function RegisterPage() {
         <span>←</span> Back to home
       </Link>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegisterForm />
+    </Suspense>
   );
 }

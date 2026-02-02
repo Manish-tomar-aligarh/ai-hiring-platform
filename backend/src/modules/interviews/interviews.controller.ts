@@ -3,6 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import type { Express } from 'express';
 import { InterviewsService } from './interviews.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -88,7 +89,11 @@ export class InterviewsController {
     FileInterceptor('file', {
       storage: diskStorage({
         destination: './uploads/interviews',
-        filename: (req, file, cb) => {
+        filename: (
+          _req: Express.Request,
+          file: Express.Multer.File,
+          cb: (error: Error | null, filename: string) => void,
+        ) => {
           const randomName = Array(32)
             .fill(null)
             .map(() => Math.round(Math.random() * 16).toString(16))

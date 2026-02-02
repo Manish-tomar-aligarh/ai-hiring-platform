@@ -6,6 +6,7 @@ import { Resume } from './entities/resume.entity';
 import { ResumeAnalysis } from './entities/resume-analysis.entity';
 import { AiService } from '../ai/ai.service';
 import { SkillsService } from '../skills/skills.service'; // ✅ ADD THIS
+import type { Express } from 'express';
 
 @Injectable()
 export class ResumesService {

@@ -5,6 +5,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { randomUUID } from 'crypto';
 import * as fs from 'fs';
+import type { Express } from 'express';
 import { ResumesController } from './resumes.controller';
 import { ResumesService } from './resumes.service';
 import { Resume } from './entities/resume.entity';
@@ -22,7 +23,11 @@ if (!fs.existsSync(uploadPath)) {
 
 const storage = diskStorage({
   destination: uploadPath,
-  filename: (_req, file, cb) => {
+  filename: (
+    _req: Express.Request,
+    file: Express.Multer.File,
+    cb: (error: Error | null, filename: string) => void,
+  ) => {
     cb(null, `${randomUUID()}${extname(file.originalname)}`);
   },
 });
@@ -33,7 +38,11 @@ const storage = diskStorage({
     MulterModule.register({
       storage,
       limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
-      fileFilter: (_req, file, cb) => {
+      fileFilter: (
+        _req: Express.Request,
+        file: Express.Multer.File,
+        cb: (error: Error | null, acceptFile: boolean) => void,
+      ) => {
         if (file.mimetype === 'application/pdf') {
           cb(null, true);
         } else {

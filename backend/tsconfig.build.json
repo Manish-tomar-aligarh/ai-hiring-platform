@@ -4,10 +4,11 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": false,
-    "types": ["node"]
+    "types": ["node", "express", "multer", "passport-jwt", "bcrypt"]
   },
   "exclude": [
     "node_modules",
+    "dist",
     "test",
     "**/*.spec.ts"
   ]
