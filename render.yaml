@@ -1,0 +1,52 @@
+services:
+  - type: web
+    name: ai-hiring-frontend
+    env: node
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    autoDeploy: true
+    plan: starter
+    region: oregon
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_API_URL
+        value: https://ai-hiring-backend.onrender.com/api/v1
+    healthCheckPath: /
+
+  - type: web
+    name: ai-hiring-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start:prod
+    autoDeploy: true
+    plan: starter
+    region: oregon
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: USE_SQLITE
+        value: false
+      - key: CORS_ORIGIN
+        value: https://ai-hiring-frontend.onrender.com
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 5432
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_DATABASE
+        value: smart_hiring
+      - key: DB_SSL
+        value: true
+      - key: DB_SSL_REJECT_UNAUTHORIZED
+        value: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 1d
+    healthCheckPath: /api/docs
