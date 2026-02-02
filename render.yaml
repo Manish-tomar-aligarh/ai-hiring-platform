@@ -3,7 +3,7 @@ services:
     name: ai-hiring-frontend
     env: node
     rootDir: frontend
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: npm run start
     autoDeploy: true
     plan: starter
@@ -13,13 +13,15 @@ services:
         value: production
       - key: NEXT_PUBLIC_API_URL
         value: https://ai-hiring-backend.onrender.com/api/v1
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
     healthCheckPath: /
 
   - type: web
     name: ai-hiring-backend
     env: node
     rootDir: backend
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: npm run start:prod
     autoDeploy: true
     plan: starter
@@ -31,6 +33,8 @@ services:
         value: false
       - key: CORS_ORIGIN
         value: https://ai-hiring-frontend.onrender.com
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
       - key: DB_HOST
         sync: false
       - key: DB_PORT
