@@ -8,14 +8,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.use(helmet());
-
-  app.enableCors({
-    origin: process.env.CORS_ORIGIN || '*',
-    credentials: true,
-  });
-
+  app.enableCors({ origin: process.env.CORS_ORIGIN || 'http://localhost:3000', credentials: true });
   app.setGlobalPrefix('api/v1');
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -37,21 +31,16 @@ async function bootstrap() {
     .addTag('skills', 'Skill tests & verification')
     .addTag('interviews', 'AI video interviews')
     .build();
-
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  const port = process.env.PORT || 3000;
-
+  const port = process.env.PORT || 4000;
+  console.log(`Listening on port ${port}...`);
   await app.listen(port);
-
-  console.log(`🚀 Backend running on port ${port}`);
+  console.log(`Backend running at http://localhost:${port}/api/v1`);
+  console.log(`Swagger docs at http://localhost:${port}/api/docs`);
 }
-
-bootstrap();
-
-/**
- * 👇 IMPORTANT FOR VERCEL
- * Export the server for serverless environment
- */
-export default bootstrap;
+bootstrap().catch(err => {
+  console.error('Bootstrap failed:', err);
+  process.exit(1);
+});
