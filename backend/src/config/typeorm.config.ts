@@ -2,10 +2,18 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { join } from 'path';
 
 export function typeOrmConfig(): TypeOrmModuleOptions {
-  const useSqlite = process.env.USE_SQLITE === 'true' || process.env.USE_SQLITE === '1';
+  const useSqliteEnv = process.env.USE_SQLITE === 'true' || process.env.USE_SQLITE === '1';
   const isProd = process.env.NODE_ENV === 'production';
   const sslEnabled = process.env.DB_SSL === 'true' || process.env.DB_SSL === '1';
   const rejectUnauthorized = process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false';
+
+  // If no explicit DB_HOST is provided, default to SQLite file storage.
+  const hasExplicitPostgres =
+    !!process.env.DB_HOST ||
+    !!process.env.DB_USERNAME ||
+    !!process.env.DB_DATABASE;
+
+  const useSqlite = useSqliteEnv || !hasExplicitPostgres;
 
   if (useSqlite) {
     return {

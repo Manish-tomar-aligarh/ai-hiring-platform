@@ -37,7 +37,8 @@ export class SkillTestAttempt {
   @Column({ default: 'in_progress' })
   status: string; // in_progress | completed
 
-  @Column({ type: 'datetime', nullable: true })
+  // Use timestamp to be compatible with both Postgres and SQLite
+  @Column({ type: 'timestamp', nullable: true })
   completedAt: Date | null;
 
   @CreateDateColumn()
