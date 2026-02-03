@@ -21,7 +21,10 @@ import { join } from 'path';
     { provide: APP_GUARD, useClass: JwtAuthGuard },
   ],
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [join(__dirname, '..', '.env'), '.env'],
+    }),
     TypeOrmModule.forRootAsync({ useFactory: typeOrmConfig }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),

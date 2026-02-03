@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param, UseGuards, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { extname, join } from 'path';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
 import type { Express } from 'express';
 import { InterviewsService } from './interviews.service';
@@ -88,7 +88,7 @@ export class InterviewsController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './uploads/interviews',
+        destination: process.env.UPLOAD_INTERVIEWS_DIR || join(__dirname, '..', '..', '..', 'uploads', 'interviews'),
         filename: (
           _req: Express.Request,
           file: Express.Multer.File,

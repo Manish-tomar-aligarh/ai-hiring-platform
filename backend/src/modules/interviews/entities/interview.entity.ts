@@ -45,8 +45,7 @@ export class Interview {
   @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
   overallScore: number | null;
 
-  // Use timestamp to be compatible with both Postgres and SQLite
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'date', nullable: true })
   completedAt: Date | null;
 
   @Column('text', { nullable: true })

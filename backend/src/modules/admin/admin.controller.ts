@@ -5,6 +5,7 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { Role } from '../../common/enums/roles.enum';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { Public } from '../../common/decorators/public.decorator';
 import { RegisterDto } from '../auth/dto/register.dto';
 
 @ApiTags('Admin')
@@ -12,6 +13,7 @@ import { RegisterDto } from '../auth/dto/register.dto';
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
+  @Public()
   @Post('setup')
   @ApiOperation({ summary: 'Create initial admin account (only if no admin exists)' })
   async setup(@Body() dto: RegisterDto) {

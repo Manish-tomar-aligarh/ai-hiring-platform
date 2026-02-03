@@ -2,30 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
-import { join } from 'path';
-import * as fs from 'fs';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  // Upload root: same dir as backend (works from repo root or backend folder)
-  const uploadsRoot = join(__dirname, '..', 'uploads');
-  for (const sub of ['', 'resumes', 'interviews']) {
-    const dir = sub ? join(uploadsRoot, sub) : uploadsRoot;
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  }
-  process.env.UPLOAD_DIR = process.env.UPLOAD_DIR || join(uploadsRoot, 'resumes');
-
   const app = await NestFactory.create(AppModule);
 
   app.use(helmet());
 
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://127.0.0.1:3000',
-      'http://127.0.0.1:3001',
-    ],
+    origin: ['http://localhost:3000'],
     credentials: true,
   });
 
@@ -35,7 +20,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
-      forbidNonWhitelisted: false,
+      forbidNonWhitelisted: true,
     }),
   );
 
