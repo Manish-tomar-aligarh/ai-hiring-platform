@@ -19,13 +19,17 @@ async function bootstrap() {
 
   app.use(helmet());
 
+  const corsOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
+    'https://ai-hiring-frontend.onrender.com',
+    'https://www.ai-hiring-frontend.onrender.com',
+  ];
+  const envOrigins = process.env.CORS_ORIGIN?.split(',').map((o) => o.trim()).filter(Boolean) || [];
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://127.0.0.1:3000',
-      'http://127.0.0.1:3001',
-    ],
+    origin: [...new Set([...corsOrigins, ...envOrigins])],
     credentials: true,
   });
 
