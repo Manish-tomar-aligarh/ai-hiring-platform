@@ -16,22 +16,26 @@ export class SkillsService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    const count = await this.testRepo.count();
-    if (count === 0) {
-      await this.testRepo.save(
-        this.testRepo.create({
-          title: 'Backend & API Fundamentals',
-          skillTags: ['JavaScript', 'TypeScript', 'REST API', 'Node.js'],
-          type: 'mcq',
-          durationMinutes: 15,
-          questions: [
-            { question: 'What does REST stand for?', options: ['Representational State Transfer', 'Remote Execution State Transfer', 'Resource Endpoint Style Transfer'], correctAnswer: 'Representational State Transfer' },
-            { question: 'Which HTTP method is used to create a resource?', options: ['GET', 'POST', 'PUT', 'DELETE'], correctAnswer: 'POST' },
-            { question: 'What is TypeScript?', options: ['A framework', 'A superset of JavaScript with types', 'A database'], correctAnswer: 'A superset of JavaScript with types' },
-          ],
-          isActive: true,
-        }),
-      );
+    try {
+      const count = await this.testRepo.count();
+      if (count === 0) {
+        await this.testRepo.save(
+          this.testRepo.create({
+            title: 'Backend & API Fundamentals',
+            skillTags: ['JavaScript', 'TypeScript', 'REST API', 'Node.js'],
+            type: 'mcq',
+            durationMinutes: 15,
+            questions: [
+              { question: 'What does REST stand for?', options: ['Representational State Transfer', 'Remote Execution State Transfer', 'Resource Endpoint Style Transfer'], correctAnswer: 'Representational State Transfer' },
+              { question: 'Which HTTP method is used to create a resource?', options: ['GET', 'POST', 'PUT', 'DELETE'], correctAnswer: 'POST' },
+              { question: 'What is TypeScript?', options: ['A framework', 'A superset of JavaScript with types', 'A database'], correctAnswer: 'A superset of JavaScript with types' },
+            ],
+            isActive: true,
+          }),
+        );
+      }
+    } catch (err) {
+      console.warn('SkillsService: could not seed default skill test (table may not exist yet):', (err as Error).message);
     }
   }
 

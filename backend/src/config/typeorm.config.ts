@@ -25,6 +25,10 @@ export function typeOrmConfig(): TypeOrmModuleOptions {
     };
   }
 
+  // On Render/first deploy Postgres has no tables; allow sync so TypeORM creates schema.
+  // Set SYNC_DATABASE=false to disable (e.g. once you use migrations).
+  const syncPostgres = process.env.SYNC_DATABASE !== 'false';
+
   return {
     type: 'postgres',
     host: process.env.DB_HOST || 'localhost',
@@ -33,7 +37,7 @@ export function typeOrmConfig(): TypeOrmModuleOptions {
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.DB_DATABASE || 'smart_hiring',
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-    synchronize: !isProd,
+    synchronize: syncPostgres,
     logging: !isProd,
     ssl: sslEnabled ? { rejectUnauthorized } : undefined,
     extra: sslEnabled ? { ssl: { rejectUnauthorized } } : undefined,
